@@ -8,6 +8,9 @@
 #    Provides ability to change the version of awscli being installed.
 #    Default: 'present'
 #    This variable is required.
+#  [$manage_deps]
+#    Whether to install Python dependencies or not.
+#    Default: true
 #
 # === Examples
 #
@@ -22,9 +25,12 @@
 # Copyright 2014 Justin Downing
 #
 class awscli (
-  $version = 'present'
+  $version = 'present',
+  $manage_deps = true,
 ) {
-  include awscli::deps
+  if $manage_deps {
+    include awscli::deps
+  }
 
   package { 'awscli':
     ensure   => $version,
