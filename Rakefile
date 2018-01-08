@@ -4,13 +4,9 @@ require 'puppet-syntax/tasks/puppet-syntax'
 
 Rake::Task[:lint].clear
 PuppetLint::RakeTask.new :lint do |config|
-  config.ignore_paths = ["modules/**/**/*.pp","pkg/**/**/*.pp"]
+  config.ignore_paths = ['spec/**/*.pp', 'pkg/**/*.pp', 'modules/**/**/*.pp', 'vendor/**/*.pp']
   config.log_format = '%{path}:%{linenumber}:%{KIND}: %{message}'
   config.disable_checks = [ 'autoloader_layout', 'class_inherits_from_params_class']
 end
 
-task :metadata do
-  sh "metadata-json-lint metadata.json"
-end
-
-task :default => [ :syntax, :lint, :spec, :metadata ]
+task :default => [:syntax, :lint, :spec, :metadata_lint]

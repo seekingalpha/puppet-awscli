@@ -17,9 +17,9 @@ class awscli::deps::redhat (
     else {
       include ::epel
     }
-    
+
     Package { require => Class['epel'] }
-  } 
+  }
   if $awscli::install_pkgdeps {
     if ! defined(Package[ $awscli::pkg_dev ]) {
       package { $awscli::pkg_dev: ensure => installed }
