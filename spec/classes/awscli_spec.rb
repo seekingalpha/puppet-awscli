@@ -2,9 +2,13 @@ require 'spec_helper'
 
 describe 'awscli', :type => 'class' do
   context 'supported OS' do
-    ['darwin', 'debian', 'redhat'].each do |osfamily|
-      describe "#{osfamily} installation" do
-        let(:facts) { { :osfamily => osfamily } }
+    [
+     { :osfamily => 'darwin' },
+     { :osfamily => 'debian' },
+     { :osfamily => 'redhat', :operatingsystem => 'amazon', :operatingsystemrelease => '7' }
+    ].each do |os_terms|
+      describe "#{os_terms[:osfamily]} installation" do
+        let(:facts) { os_terms }
 
         it { should contain_class("awscli::deps") }
 
@@ -16,7 +20,7 @@ describe 'awscli', :type => 'class' do
       end
 
       describe "proxy pip setup" do
-        let(:facts) { { :osfamily => 'debian' } }
+        let(:facts) { os_terms }
         let(:params) { { :install_options => ['--proxy foo'] } }
 
         it do should contain_package('awscli').with(
